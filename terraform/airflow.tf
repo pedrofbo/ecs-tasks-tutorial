@@ -91,7 +91,7 @@ resource "aws_instance" "airflow_server" {
   subnet_id                   = aws_subnet.main.id
   vpc_security_group_ids      = [aws_security_group.allow_airflow_webserver.id]
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = "t3a.large"
+  instance_type               = "t2.large"
   key_name                    = var.ec2_key_name
   iam_instance_profile        = aws_iam_instance_profile.airflow_server.id
   associate_public_ip_address = true
