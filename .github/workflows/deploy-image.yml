@@ -20,7 +20,7 @@ jobs:
 
       - name: Build image
         run: |
-          docker build -t $REPOSITORY_URL:latest .
+          docker build -t $REPOSITORY_URL:latest ./app
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
