@@ -10,6 +10,10 @@ variable "ec2_key_name" {
   type        = string
   description = "Name of the EC2 key pair (must already exist) that will be used to log in to instances."
 }
+variable "project_name" {
+  type        = string
+  description = "Name of the project."
+}
 
 data "aws_caller_identity" "current" {}
 locals {
