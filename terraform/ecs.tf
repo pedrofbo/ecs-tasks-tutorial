@@ -1,6 +1,28 @@
 # Create an ECS cluster to run tasks
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "ecs-tasks-tutorial"
+  name = "ecs-fargate-test-1"
+  tags                     = {
+    "project" = "fargate_test_1"
+  }
+}
+
+resource "aws_ecs_cluster" "ecs_cluster_2" {
+  name = "ecs-fargate-test-2"
+  tags                     = {
+    "project" = "fargate_test_2"
+  }
+}
+resource "aws_ecs_cluster" "ecs_cluster_3" {
+  name = "ecs-fargate-test-3"
+  tags                     = {
+    "project" = "fargate_test_3"
+  }
+}
+resource "aws_ecs_cluster" "ecs_cluster_4" {
+  name = "ecs-fargate-test-4"
+  tags                     = {
+    "project" = "fargate_test_4"
+  }
 }
 
 # Create an IAM role for task execution to assume
@@ -27,12 +49,12 @@ resource "aws_iam_role_policy_attachment" "sto-readonly-role-policy-attach" {
 
 # Create task definition
 resource "aws_ecs_task_definition" "ecs_task" {
-  family = "ecs-tasks-tutorial"
+  family = "ecs-fargate-test-1"
   container_definitions = jsonencode(
     [
       {
-        name  = "ecs-tasks-tutorial"
-        image = "${local.account_id}.dkr.ecr.${var.region}.amazonaws.com/ecs-tasks-tutorial:latest"
+        name  = "ecs-fargate-test-1"
+        image = "${local.account_id}.dkr.ecr.${var.region}.amazonaws.com/ecs-fargate-test:latest"
         logConfiguration = {
           logDriver = "awslogs"
           options = {
@@ -44,9 +66,94 @@ resource "aws_ecs_task_definition" "ecs_task" {
       }
     ]
   )
-  cpu                      = "256"
-  memory                   = "512"
+  cpu                      = "512"
+  memory                   = "1024"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.tasks_execution_role.arn
+  tags                     = {
+    "project" = "fargate_test_1"
+  }
+}
+
+resource "aws_ecs_task_definition" "ecs_task_2" {
+  family = "ecs-fargate-test-2"
+  container_definitions = jsonencode(
+    [
+      {
+        name  = "ecs-fargate-test-2"
+        image = "${local.account_id}.dkr.ecr.${var.region}.amazonaws.com/ecs-fargate-test:latest"
+        logConfiguration = {
+          logDriver = "awslogs"
+          options = {
+            awslogs-group         = aws_cloudwatch_log_group.ecs_tasks_log_group.name
+            awslogs-region        = var.region
+            awslogs-stream-prefix = "tasks"
+          }
+        }
+      }
+    ]
+  )
+  cpu                      = "512"
+  memory                   = "1024"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  execution_role_arn       = aws_iam_role.tasks_execution_role.arn
+  tags                     = {
+    "project" = "fargate_test_2"
+  }
+}
+resource "aws_ecs_task_definition" "ecs_task_3" {
+  family = "ecs-fargate-test-3"
+  container_definitions = jsonencode(
+    [
+      {
+        name  = "ecs-fargate-test-3"
+        image = "${local.account_id}.dkr.ecr.${var.region}.amazonaws.com/ecs-fargate-test:latest"
+        logConfiguration = {
+          logDriver = "awslogs"
+          options = {
+            awslogs-group         = aws_cloudwatch_log_group.ecs_tasks_log_group.name
+            awslogs-region        = var.region
+            awslogs-stream-prefix = "tasks"
+          }
+        }
+      }
+    ]
+  )
+  cpu                      = "512"
+  memory                   = "1024"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  execution_role_arn       = aws_iam_role.tasks_execution_role.arn
+  tags                     = {
+    "project" = "fargate_test_3"
+  }
+}
+resource "aws_ecs_task_definition" "ecs_task_4" {
+  family = "ecs-fargate-test-4"
+  container_definitions = jsonencode(
+    [
+      {
+        name  = "ecs-fargate-test-4"
+        image = "${local.account_id}.dkr.ecr.${var.region}.amazonaws.com/ecs-fargate-test:latest"
+        logConfiguration = {
+          logDriver = "awslogs"
+          options = {
+            awslogs-group         = aws_cloudwatch_log_group.ecs_tasks_log_group.name
+            awslogs-region        = var.region
+            awslogs-stream-prefix = "tasks"
+          }
+        }
+      }
+    ]
+  )
+  cpu                      = "1024"
+  memory                   = "2048"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  execution_role_arn       = aws_iam_role.tasks_execution_role.arn
+  tags                     = {
+    "project" = "fargate_test_4"
+  }
 }

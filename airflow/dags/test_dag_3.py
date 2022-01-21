@@ -11,7 +11,7 @@ default_args = {
     "owner": "airflow"
 }
 
-with DAG("test_1", default_args=default_args, schedule_interval=None,
+with DAG("test_3", default_args=default_args, schedule_interval=None,
          start_date=datetime(2021, 1, 1)) as dag:
 
     generate_id = PythonOperator(
@@ -21,21 +21,21 @@ with DAG("test_1", default_args=default_args, schedule_interval=None,
 
     ecs_task = ECSOperator(
         task_id="ecs_task",
-        cluster="ecs-fargate-test-1",
-        task_definition="ecs-fargate-test-1",
+        cluster="ecs-fargate-test-3",
+        task_definition="ecs-fargate-test-3",
         launch_type="FARGATE",
         overrides={
             "containerOverrides": [
                 {
-                    "name": "ecs-fargate-test-1",
+                    "name": "ecs-fargate-test-3",
                     "environment": [
                         {
                             "name": "EXECUTION_ID",
                             "value": "{{ task_instance.xcom_pull(task_ids='generate_id') }}"  # noqa: E501
                         }
                     ],
-                    "cpu": 256,
-                    "memory": 512
+                    "cpu": 512,
+                    "memory": 1024
                 }
             ]
         },
@@ -47,7 +47,7 @@ with DAG("test_1", default_args=default_args, schedule_interval=None,
             }
         },
         awslogs_group="ecs-fargate-test",
-        awslogs_stream_prefix="tasks/ecs-fargate-test-1",
+        awslogs_stream_prefix="tasks/ecs-fargate-test-3",
         propagate_tags="TASK_DEFINITION"
     )
 
