@@ -3,7 +3,7 @@ resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name = "ecs-tasks-tutorial"
+    Name = "disk_monitor"
   }
 }
 # Create an internet gateway
@@ -15,7 +15,7 @@ resource "aws_subnet" "main" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.0.1.0/24"
   tags = {
-    Name = "ecs-tasks-tutorial"
+    Name = "disk_monitor"
   }
 }
 # Create a route table and associate it to the subnet
@@ -26,7 +26,7 @@ resource "aws_route_table" "main" {
     gateway_id = aws_internet_gateway.main.id
   }
   tags = {
-    Name = "ecs-tasks-tutorial-public_subnet"
+    Name = "disk_monitor-public_subnet"
   }
 }
 resource "aws_route_table_association" "main" {
@@ -35,8 +35,8 @@ resource "aws_route_table_association" "main" {
 }
 # Create a security group behind which Airflow instance will be placed
 resource "aws_security_group" "allow_airflow_webserver" {
-  name        = "ecs-tasks-tutorial-airflow"
-  description = "Used by ecs-tasks-tutorial Airflow server"
+  name        = "disk_monitor-sns"
+  description = "Used by disk_monitor Airflow server"
   vpc_id      = aws_vpc.main.id
   ingress {
     from_port   = 22
