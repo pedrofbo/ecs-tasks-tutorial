@@ -61,10 +61,10 @@ resource "aws_instance" "disk_monitor" {
   iam_instance_profile        = aws_iam_instance_profile.disk_monitor.id
   associate_public_ip_address = true
   user_data                   = templatefile(
-    "${path.module}/scripts/setup.sh",
+    "${path.module}/scripts/setup_snippet.sh",
     {
       sns_topic = aws_sns_topic.disk_monitor.arn,
-      project_name = "${var.project_name}-worker"
+      instance_name = "${var.project_name}-worker"
     }
   )
   root_block_device {
